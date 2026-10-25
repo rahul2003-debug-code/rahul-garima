@@ -1,18 +1,20 @@
 // Wedding Audio Player Manager
 // Plays authentic Indian wedding songs with continuous looping and Web Audio fallback
 
+const BASE = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') + '/';
+
 export const WEDDING_TRACKS = [
   {
     id: "milan",
     title: "मिलन अभी आधा अधूरा है",
     movie: "विवाह (Vivah)",
-    src: "/audio/wedding-song.mp3"
+    src: `${BASE}audio/wedding-song.mp3`
   },
   {
     id: "shaadi",
     title: "हमारी शादी में अभी बाकी हैं...",
     movie: "विवाह (Vivah)",
-    src: "/audio/hamari-shaadi-mein.mp3"
+    src: `${BASE}audio/hamari-shaadi-mein.mp3`
   }
 ];
 

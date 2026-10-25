@@ -1,6 +1,8 @@
 // Centralized Wedding Configuration for Rahul Kumar & Garima Verma
 // All details verified from the official printed wedding invitation & user instructions
 
+const BASE = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') + '/';
+
 export const WEDDING_DATA = {
   couple: {
     groom: {
@@ -11,7 +13,7 @@ export const WEDDING_DATA = {
       parentsHi: "स्व० लालसा देवी एवं श्री अशोक कुमार",
       parentsEn: "Late Lalsa Devi & Shri Ashok Kumar",
       addressHi: "ग्राम व पोस्ट — मसोन, जनपद — गाजीपुर (उ. प्र.) 233231",
-      image: "/images/groom.jpg",
+      image: `${BASE}images/groom.jpg`,
       quote: "दो दिलों का पावन संगम, प्रेम, विश्वास और मर्यादा का अटूट बंधन।"
     },
     bride: {
@@ -23,7 +25,7 @@ export const WEDDING_DATA = {
       parentsEn: "Smt. Poonam Verma & Shri Vinod Kumar",
       currentAddressHi: "शिवगंगा कॉलोनी, रमना, बी.एच.यू., वाराणसी (उ. प्र.) 221011",
       permanentAddressHi: "ग्राम — भलवां, पोस्ट — रूपैधा, जनपद — मिर्जापुर (उ. प्र.) 231305",
-      image: "/images/bride.jpg",
+      image: `${BASE}images/bride.jpg`,
       quote: "सात फेरों के संग नई शुरुआत, जीवन भर का अटूट साथ और आशीर्वाद।"
     }
   },
@@ -134,19 +136,19 @@ export const WEDDING_DATA = {
       id: "cover",
       title: "शुभ निमंत्रण आवरण (कवर)",
       description: "हस्तमुद्रित मूल आवरण — राहुल परिणय गरिमा",
-      src: "/images/invitation-cover.jpg"
+      src: `${BASE}images/invitation-cover.jpg`
     },
     {
       id: "program",
       title: "मांगलिक कार्यक्रम पत्रिका",
       description: "चारों पावन कार्यक्रमों की मूल मुद्रित सूची",
-      src: "/images/mangalik-karyakram.jpg"
+      src: `${BASE}images/mangalik-karyakram.jpg`
     },
     {
       id: "inner",
       title: "विस्तृत विवाह पत्रिका",
       description: "पारिवारिक विवरण, दर्शनाभिलाषी एवं विनीत सूची",
-      src: "/images/invitation-inner.jpg"
+      src: `${BASE}images/invitation-inner.jpg`
     }
   ],
 
