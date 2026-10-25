@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="goldGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFEAA7" />
+      <stop offset="60%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#8B6914" />
+    </radialGradient>
+    <linearGradient id="maroonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8A1122" />
+      <stop offset="100%" stop-color="#3B030A" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#maroonGrad)" stroke="url(#goldGrad)" stroke-width="3" />
+  <circle cx="50" cy="50" r="42" fill="none" stroke="url(#goldGrad)" stroke-width="1" stroke-dasharray="3,2" />
+  <!-- Ganesha / Om / Royal Wedding Monogram -->
+  <text x="50" y="44" font-family="'Cinzel', serif" font-size="20" font-weight="bold" fill="url(#goldGrad)" text-anchor="middle">R &amp; G</text>
+  <path d="M50 52 C46 48, 40 48, 40 54 C40 60, 50 66, 50 68 C50 66, 60 60, 60 54 C60 48, 54 48, 50 52 Z" fill="#E63946" stroke="url(#goldGrad)" stroke-width="1" />
+  <text x="50" y="80" font-family="'Yatra One', cursive" font-size="10" fill="#F3E5AB" text-anchor="middle">|| मंगलम ||</text>
+</svg>
