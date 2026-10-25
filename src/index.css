@@ -1,0 +1,342 @@
+/* ==========================================================================
+   RAHUL ❤️ GARIMA — CELESTIAL CLOUD LUXE WEDDING INVITATION
+   Ethereal Luminous Clouds, Rose-Gold & Champagne Glow, Soft Silk Pastels
+   ========================================================================== */
+
+:root {
+  /* Royal Indian Wedding Color Palette (Pehle wala Rich Maroon & Velvet Crimson) */
+  --color-maroon-dark: #220106;
+  --color-maroon-rich: #3D040D;
+  --color-maroon-crimson: #5C0614;
+  --color-crimson-deep: #780B1C;
+  --color-ruby: #941325;
+  
+  --bg-night-sky: #1F0208;
+  --bg-maroon-canvas: #240106;
+  --bg-cloud-dark: #32030C;
+  --bg-cloud-gradient: linear-gradient(180deg, #1A0105 0%, #30030B 40%, #180004 100%);
+
+  /* Royal Metallics & Accents */
+  --color-gold-light: #FFF0C2;
+  --color-champagne-gold: #E5C378;
+  --color-gold-bright: #FAD980;
+  --color-gold-rich: #D4AF37;
+  --color-gold-dark: #8F6910;
+  --color-rose-gold: #E8A598;
+  --color-gold-border: rgba(229, 195, 120, 0.45);
+  --color-rose-border: rgba(232, 165, 152, 0.35);
+
+  /* Cloud Card Surfaces */
+  --card-cloud-bg: linear-gradient(155deg, rgba(62, 7, 18, 0.94) 0%, rgba(36, 3, 9, 0.98) 100%);
+  --card-cloud-light: linear-gradient(165deg, #FFFDF8 0%, #FAF5EA 50%, #F5EDE2 100%);
+  --card-cloud-inner: rgba(255, 255, 255, 0.05);
+
+  /* Majestic Typography (High-contrast, Crisp, Elegant) */
+  --color-text-title: #FFF0C2;
+  --color-text-main: #FFF0E6;
+  --color-text-muted: rgba(255, 240, 230, 0.78);
+  --color-text-gold: #FAD980;
+  --color-text-dark: #2B1810;
+
+  /* Cloud Card Shadows */
+  --shadow-cloud: 0 16px 45px rgba(0, 0, 0, 0.55), 0 0 25px rgba(229, 195, 120, 0.16);
+  --shadow-cloud-hover: 0 24px 65px rgba(0, 0, 0, 0.65), 0 0 40px rgba(229, 195, 120, 0.32);
+  --shadow-cloud-pill: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* Typography */
+  --font-serif-royal: 'Cinzel', Georgia, serif;
+  --font-serif-decorative: 'Cinzel Decorative', 'Cinzel', serif;
+  --font-hindi-display: 'Rozha One', 'Yatra One', 'Tiro Devanagari Hindi', serif;
+  --font-hindi-text: 'Tiro Devanagari Hindi', 'Rozha One', serif;
+  --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-script: 'Cormorant Garamond', Georgia, serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-maroon-canvas);
+  color: var(--color-text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(92, 6, 20, 0.65) 0%, transparent 65%),
+    radial-gradient(circle at 12% 30%, rgba(120, 11, 28, 0.45) 0%, transparent 50%),
+    radial-gradient(circle at 88% 65%, rgba(92, 6, 20, 0.5) 0%, transparent 55%),
+    radial-gradient(circle at 50% 90%, rgba(61, 4, 13, 0.7) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Custom Cloud Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1F0208;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-champagne-gold), #780B1C);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold-bright);
+}
+
+/* Gold / Rose Shimmer Text */
+.gold-shimmer-text {
+  background: linear-gradient(90deg, #FAD980 0%, #FFF3C4 35%, #D4AF37 60%, #FAD980 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shineGold 4s linear infinite;
+}
+
+@keyframes shineGold {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* ==========================================================================
+   STYLISH CLOUD SHAPE UTILITIES
+   ========================================================================== */
+
+/* Organic Floating Cloud Card */
+.cloud-card {
+  position: relative;
+  background: var(--card-cloud-bg);
+  border-radius: clamp(28px, 6vw, 44px);
+  box-shadow: var(--shadow-cloud);
+  border: 1.5px solid var(--color-gold-border);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.cloud-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-cloud-hover);
+  border-color: var(--color-gold-bright);
+}
+
+/* Cloud Scalloped Border Silhouette */
+.cloud-scallop-card {
+  position: relative;
+  background: var(--card-cloud-bg);
+  border-radius: clamp(32px, 8vw, 54px) clamp(18px, 4vw, 28px) clamp(32px, 8vw, 54px) clamp(18px, 4vw, 28px);
+  border: 1.5px solid var(--color-gold-border);
+  box-shadow: var(--shadow-cloud);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.cloud-scallop-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-gold-bright);
+  box-shadow: var(--shadow-cloud-hover);
+}
+
+/* Cloud Photo Frame */
+.cloud-photo-frame {
+  position: relative;
+  border-radius: 65% 35% 60% 40% / 45% 55% 45% 55%;
+  padding: 6px;
+  background: linear-gradient(135deg, #FAD980 0%, #E8A598 45%, #D4AF37 80%, #FFF0C2 100%);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 25px rgba(229, 195, 120, 0.35);
+  transition: all 0.5s ease;
+  animation: cloudMorph 9s ease-in-out infinite alternate;
+}
+
+@keyframes cloudMorph {
+  0% {
+    border-radius: 65% 35% 60% 40% / 45% 55% 45% 55%;
+  }
+  50% {
+    border-radius: 40% 60% 35% 65% / 55% 45% 60% 40%;
+  }
+  100% {
+    border-radius: 60% 40% 55% 45% / 40% 60% 45% 55%;
+  }
+}
+
+.cloud-photo-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+  background: #32030C;
+}
+
+/* Stylish Cloud Floating Buttons */
+.btn-cloud-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: clamp(12px, 3vw, 16px) clamp(24px, 5vw, 36px);
+  background: linear-gradient(135deg, #D4AF37 0%, #FAD980 50%, #AA771C 100%);
+  color: #240106 !important;
+  font-family: var(--font-hindi-display);
+  font-weight: bold;
+  font-size: clamp(0.98rem, 2.5vw, 1.1rem);
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.35), 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+}
+
+.btn-cloud-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 34px rgba(212, 175, 55, 0.55), 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.btn-cloud-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-cloud-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: clamp(10px, 2.5vw, 13px) clamp(20px, 4vw, 28px);
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFF0C2;
+  font-family: var(--font-hindi-display);
+  font-size: clamp(0.9rem, 2.2vw, 1rem);
+  font-weight: 600;
+  border: 1.5px solid var(--color-champagne-gold);
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  max-width: 100%;
+}
+
+.btn-cloud-secondary:hover {
+  background: rgba(229, 195, 120, 0.15);
+  border-color: #FAD980;
+  color: #FAD980;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.25);
+}
+
+/* Floating Cloud Pill Badge */
+.cloud-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(45, 4, 12, 0.85);
+  border: 1.5px solid var(--color-gold-border);
+  padding: 6px 20px;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  max-width: 95%;
+}
+
+/* Ornament Divider */
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px auto 20px auto;
+  max-width: 320px;
+}
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-champagne-gold), transparent);
+}
+.divider-center {
+  font-family: var(--font-hindi-display);
+  color: var(--color-champagne-gold);
+  font-size: 1.1rem;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 32px;
+  }
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS OVERRIDES
+   ========================================================================== */
+
+/* Universal mobile layout guards */
+@media (max-width: 640px) {
+  h1 {
+    font-size: clamp(2rem, 8.5vw, 2.8rem) !important;
+  }
+  h2 {
+    font-size: clamp(1.7rem, 6.5vw, 2.3rem) !important;
+  }
+  h3 {
+    font-size: clamp(1.3rem, 5vw, 1.7rem) !important;
+  }
+
+  /* Compact header on mobile */
+  .desktop-nav {
+    display: none !important;
+  }
+
+  /* Control button label hide on mobile if cramped */
+  .control-label {
+    display: none !important;
+  }
+
+  /* Equalizer adjustments */
+  .eq-bar {
+    width: 2px !important;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
