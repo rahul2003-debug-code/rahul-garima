@@ -1,61 +1,41 @@
-import { useState, useEffect } from "react";
-import "./App.css";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import BlessingSection from "./components/BlessingSection";
-import CoupleSection from "./components/CoupleSection";
-import MangalikKaryakram from "./components/MangalikKaryakram";
-import InvitationMessage from "./components/InvitationMessage";
-import ShareSection from "./components/ShareSection";
-import RsvpSection from "./components/RsvpSection";
-import Footer from "./components/Footer";
-import PetalCanvas from "./components/PetalCanvas";
-import EnvelopeModal from "./components/EnvelopeModal";
-import RoyalCardModal from "./components/RoyalCardModal";
-import FloatingMusicPlayer from "./components/FloatingMusicPlayer";
-import { CloudWaveDivider, CloudSilhouette } from "./components/CloudDividers";
-import { weddingAudio } from "./utils/audio";
+import { useState, useEffect } from 'react';
+import RoyalEnvelopeModal from './components/RoyalEnvelopeModal';
+import PetalCanvas from './components/PetalCanvas';
+import FloatingMusicPlayer from './components/FloatingMusicPlayer';
+import RoyalHeader from './components/RoyalHeader';
+import HeroSection from './components/HeroSection';
+import CoupleSection from './components/CoupleSection';
+import MangalikSchedule from './components/MangalikSchedule';
+import ShayariCard from './components/ShayariCard';
+import VenueLocation from './components/VenueLocation';
+import FamilySection from './components/FamilySection';
+import InviteGenerator from './components/InviteGenerator';
+import WishesRSVP from './components/WishesRSVP';
+import Footer from './components/Footer';
+import FloatingQuickBar from './components/FloatingQuickBar';
+import OriginalCardModal from './components/OriginalCardModal';
+import { weddingAudio } from './utils/audio';
 
 export default function App() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [petalsEnabled, setPetalsEnabled] = useState(true);
-  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [isOriginalCardOpen, setIsOriginalCardOpen] = useState(false);
+  const [guestName, setGuestName] = useState('');
 
-  // Sync with audio manager state
+  // Extract recipient name from URL query parameter (e.g. ?to=अतिथि+का+नाम)
   useEffect(() => {
-    const unsubscribe = weddingAudio.subscribe((state) => {
-      setIsAudioPlaying(state.isPlaying);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  // Global user interaction handler to guarantee wedding song plays smoothly
-  useEffect(() => {
-    const handleFirstInteraction = () => {
-      if (!weddingAudio.isPlaying) {
-        weddingAudio.play();
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const to = params.get('to');
+      if (to) {
+        setGuestName(decodeURIComponent(to));
       }
-      // Remove after first interaction
-      window.removeEventListener("click", handleFirstInteraction);
-      window.removeEventListener("touchstart", handleFirstInteraction);
-    };
-
-    window.addEventListener("click", handleFirstInteraction, { once: true });
-    window.addEventListener("touchstart", handleFirstInteraction, { once: true });
-
-    return () => {
-      window.removeEventListener("click", handleFirstInteraction);
-      window.removeEventListener("touchstart", handleFirstInteraction);
-    };
+    } catch (e) {
+      console.log('Error parsing guest name:', e);
+    }
   }, []);
 
-  // Audio Toggle
-  const handleToggleAudio = () => {
-    weddingAudio.toggle();
-  };
-
-  const handleStartAudio = () => {
+  const handleOpenCard = () => {
     weddingAudio.play();
   };
 
@@ -63,83 +43,73 @@ export default function App() {
     setPetalsEnabled((prev) => !prev);
   };
 
-  return (
-    <div style={{ position: "relative", minHeight: "100vh", overflowX: "hidden" }}>
-      {/* Dreamy Drifting Cloud Silhouettes in Background */}
-      <CloudSilhouette />
+  const handleReplayEnvelope = () => {
+    setIsEnvelopeOpen(true);
+  };
 
-      {/* 3D Cinematic Opening Envelope Modal */}
-      <EnvelopeModal
+  return (
+    <div style={{ position: 'relative', minHeight: '100vh', overflowX: 'hidden' }}>
+      {/* 3D Wax-Sealed Opening Envelope Ceremony */}
+      <RoyalEnvelopeModal
         isOpen={isEnvelopeOpen}
-        onOpenComplete={() => setIsEnvelopeOpen(false)}
-        onStartAudio={handleStartAudio}
+        onClose={() => setIsEnvelopeOpen(false)}
+        onOpenCard={handleOpenCard}
+        guestName={guestName}
       />
 
-      {/* Falling Rose Petals & Golden Sparkles Canvas */}
+      {/* Falling Velvet Rose Petals & Golden Sparkle Rain */}
       <PetalCanvas enabled={petalsEnabled} />
 
-      {/* Royal Navbar */}
-      <Navbar
-        isAudioPlaying={isAudioPlaying}
-        onToggleAudio={handleToggleAudio}
-        petalsEnabled={petalsEnabled}
-        onTogglePetals={handleTogglePetals}
-      />
-
-      <main>
-        {/* Hero Section with Rahul & Garima Real Photographs */}
-        <Hero />
-
-        {/* Soft Cloud Wave Transition */}
-        <CloudWaveDivider fill="#38040E" bg="transparent" />
-
-        {/* Sacred Sanskrit Blessing (Ganesha Shloka) */}
-        <BlessingSection />
-
-        {/* Soft Cloud Wave Transition */}
-        <CloudWaveDivider flip={true} fill="#2A0106" bg="transparent" />
-
-        {/* Couple Lineage & Story (Rahul & Garima) */}
-        <CoupleSection />
-
-        {/* Soft Cloud Wave Transition */}
-        <CloudWaveDivider fill="#36030C" bg="transparent" />
-
-        {/* Mangalik Karyakram — 4 Auspicious Events with Varanasi Baraat Note */}
-        <MangalikKaryakram />
-
-        {/* Soft Cloud Wave Transition */}
-        <CloudWaveDivider flip={true} fill="#2A0106" bg="transparent" />
-
-        {/* Masterpiece Royal Digital Wedding Patrika (No scanned images) */}
-        <InvitationMessage onOpenCardModal={() => setIsCardModalOpen(true)} />
-
-        {/* Soft Cloud Wave Transition */}
-        <CloudWaveDivider fill="#38040E" bg="transparent" />
-
-        {/* Guest RSVP & Blessings Wall */}
-        <RsvpSection />
-
-        {/* Soft Cloud Wave Transition */}
-        <CloudWaveDivider flip={true} fill="#260106" bg="transparent" />
-
-        {/* WhatsApp Sharing & Family Contacts (8052797334, 8173087391) */}
-        <ShareSection />
-      </main>
-
-      {/* Soft Cloud Wave Transition to Footer */}
-      <CloudWaveDivider fill="#210005" bg="transparent" />
-
-      {/* Closing Royal Blessing & Footer */}
-      <Footer />
-
-      {/* Floating Royal Wedding Song Music Widget */}
+      {/* Floating Royal Music Player & Visualizer */}
       <FloatingMusicPlayer />
 
-      {/* Fullscreen Masterpiece Royal Card Modal */}
-      <RoyalCardModal
-        isOpen={isCardModalOpen}
-        onClose={() => setIsCardModalOpen(false)}
+      {/* Main Wedding Invitation Card Content */}
+      <main>
+        {/* Sacred Ganesha & Kashi Vishwanath Invocation */}
+        <RoyalHeader
+          petalsEnabled={petalsEnabled}
+          onTogglePetals={handleTogglePetals}
+        />
+
+        {/* Hero Section with Couple Portraits, Names & Live Countdown */}
+        <HeroSection
+          onOpenOriginalCard={() => setIsOriginalCardOpen(true)}
+        />
+
+        {/* Couple & Family Heritage Introduction */}
+        <CoupleSection />
+
+        {/* Auspicious Wedding Events Schedule (Shubh-Vivah & Vidaai) */}
+        <MangalikSchedule />
+
+        {/* Poetic Request Shayari */}
+        <ShayariCard />
+
+        {/* Venue, Maps & Direction Guidance */}
+        <VenueLocation />
+
+        {/* Family Blessings (Darshanabhilashi & Vineet) */}
+        <FamilySection />
+
+        {/* Personalized WhatsApp Invite Maker Tool */}
+        <InviteGenerator />
+
+        {/* Guest Blessings Wall & RSVP */}
+        <WishesRSVP />
+
+        {/* Closing Royal Footer */}
+        <Footer onReplayEnvelope={handleReplayEnvelope} />
+      </main>
+
+      {/* Mobile Sticky Quick Action Bar */}
+      <FloatingQuickBar
+        onOpenOriginalCard={() => setIsOriginalCardOpen(true)}
+      />
+
+      {/* Original Scanned Card Lightbox Modal */}
+      <OriginalCardModal
+        isOpen={isOriginalCardOpen}
+        onClose={() => setIsOriginalCardOpen(false)}
       />
     </div>
   );

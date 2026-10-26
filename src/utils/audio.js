@@ -1,142 +1,135 @@
-// Wedding Audio Player Manager
-// Plays authentic Indian wedding songs with continuous looping and Web Audio fallback
+// Robust Audio Controller for Royal Wedding Web Invitation
+import { WEDDING_DATA } from '../config/weddingData';
 
-const BASE = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') + '/';
-
-export const WEDDING_TRACKS = [
-  {
-    id: "milan",
-    title: "मिलन अभी आधा अधूरा है",
-    movie: "विवाह (Vivah)",
-    src: `${BASE}audio/wedding-song.mp3`
-  },
-  {
-    id: "shaadi",
-    title: "हमारी शादी में अभी बाकी हैं...",
-    movie: "विवाह (Vivah)",
-    src: `${BASE}audio/hamari-shaadi-mein.mp3`
-  }
-];
-
-class WeddingAudioPlayer {
+class WeddingAudioManager {
   constructor() {
-    this.audioElement = null;
-    this.isPlaying = false;
+    this.audio = null;
     this.currentTrackIndex = 0;
-    this.volume = 0.65;
+    this.isPlaying = false;
+    this.isMuted = false;
+    this.volume = 0.75;
     this.listeners = new Set();
+    this.hasUserInteracted = false;
+    this.initAudio();
   }
 
-  init() {
-    if (!this.audioElement && typeof window !== "undefined") {
-      this.audioElement = new Audio();
-      this.audioElement.src = WEDDING_TRACKS[this.currentTrackIndex].src;
-      this.audioElement.loop = true;
-      this.audioElement.volume = this.volume;
-      this.audioElement.preload = "auto";
+  initAudio() {
+    if (typeof window === 'undefined') return;
 
-      this.audioElement.addEventListener("play", () => {
-        this.isPlaying = true;
-        this.notify();
-      });
+    const tracks = WEDDING_DATA.musicTracks;
+    if (!tracks || tracks.length === 0) return;
 
-      this.audioElement.addEventListener("pause", () => {
-        this.isPlaying = false;
-        this.notify();
-      });
+    this.audio = new Audio(tracks[this.currentTrackIndex].src);
+    this.audio.loop = true;
+    this.audio.volume = this.volume;
+    this.audio.preload = 'auto';
 
-      this.audioElement.addEventListener("ended", () => {
-        // If track ends, loop again
-        if (this.audioElement) {
-          this.audioElement.currentTime = 0;
-          this.audioElement.play().catch(() => {});
-        }
-      });
-    }
+    this.audio.addEventListener('play', () => {
+      this.isPlaying = true;
+      this.notifyListeners();
+    });
+
+    this.audio.addEventListener('pause', () => {
+      this.isPlaying = false;
+      this.notifyListeners();
+    });
+
+    this.audio.addEventListener('ended', () => {
+      this.nextTrack();
+    });
+
+    this.audio.addEventListener('error', (e) => {
+      console.warn('Audio playback error (could be source or autoplay restriction):', e);
+      this.isPlaying = false;
+      this.notifyListeners();
+    });
   }
 
-  subscribe(listener) {
-    this.listeners.add(listener);
-    return () => this.listeners.delete(listener);
-  }
+  play() {
+    if (!this.audio) this.initAudio();
+    if (!this.audio) return Promise.reject();
 
-  notify() {
-    this.listeners.forEach((listener) =>
-      listener({
-        isPlaying: this.isPlaying,
-        currentTrack: WEDDING_TRACKS[this.currentTrackIndex],
-        volume: this.volume
-      })
-    );
-  }
-
-  getCurrentTrack() {
-    return WEDDING_TRACKS[this.currentTrackIndex];
-  }
-
-  async play() {
-    this.init();
-    if (this.audioElement) {
-      try {
-        await this.audioElement.play();
-        this.isPlaying = true;
-        this.notify();
-        return true;
-      } catch (err) {
-        console.warn("Audio play prevented by browser policy, waiting for user gesture:", err);
-        return false;
-      }
-    }
-    return false;
+    this.hasUserInteracted = true;
+    return this.audio.play().then(() => {
+      this.isPlaying = true;
+      this.notifyListeners();
+    }).catch(err => {
+      console.log('Play blocked or waiting for user interaction:', err);
+      this.isPlaying = false;
+      this.notifyListeners();
+    });
   }
 
   pause() {
-    if (this.audioElement) {
-      this.audioElement.pause();
-      this.isPlaying = false;
-      this.notify();
-    }
+    if (!this.audio) return;
+    this.audio.pause();
+    this.isPlaying = false;
+    this.notifyListeners();
   }
 
   toggle() {
-    this.init();
     if (this.isPlaying) {
       this.pause();
-      return false;
     } else {
       this.play();
-      return true;
     }
   }
 
-  setTrack(index) {
-    if (index >= 0 && index < WEDDING_TRACKS.length) {
-      this.currentTrackIndex = index;
-      if (this.audioElement) {
-        const wasPlaying = this.isPlaying;
-        this.audioElement.src = WEDDING_TRACKS[this.currentTrackIndex].src;
-        this.audioElement.currentTime = 0;
-        if (wasPlaying) {
-          this.play();
-        } else {
-          this.notify();
-        }
-      }
+  switchTrack(index) {
+    const tracks = WEDDING_DATA.musicTracks;
+    if (index < 0 || index >= tracks.length) return;
+    this.currentTrackIndex = index;
+
+    const wasPlaying = this.isPlaying;
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.src = tracks[this.currentTrackIndex].src;
+      this.audio.load();
+    }
+
+    if (wasPlaying || this.hasUserInteracted) {
+      this.play();
+    } else {
+      this.notifyListeners();
     }
   }
 
   nextTrack() {
-    const nextIdx = (this.currentTrackIndex + 1) % WEDDING_TRACKS.length;
-    this.setTrack(nextIdx);
+    const nextIndex = (this.currentTrackIndex + 1) % WEDDING_DATA.musicTracks.length;
+    this.switchTrack(nextIndex);
   }
 
-  setVolume(vol) {
-    this.volume = Math.max(0, Math.min(1, vol));
-    if (this.audioElement) {
-      this.audioElement.volume = this.volume;
-      this.notify();
-    }
+  toggleMute() {
+    if (!this.audio) return;
+    this.isMuted = !this.isMuted;
+    this.audio.muted = this.isMuted;
+    this.notifyListeners();
+  }
+
+  getCurrentTrack() {
+    return WEDDING_DATA.musicTracks[this.currentTrackIndex];
+  }
+
+  getState() {
+    return {
+      isPlaying: this.isPlaying,
+      isMuted: this.isMuted,
+      currentTrack: this.getCurrentTrack(),
+      currentTrackIndex: this.currentTrackIndex,
+      tracks: WEDDING_DATA.musicTracks
+    };
+  }
+
+  subscribe(listener) {
+    this.listeners.add(listener);
+    listener(this.getState());
+    return () => this.listeners.delete(listener);
+  }
+
+  notifyListeners() {
+    const state = this.getState();
+    this.listeners.forEach(fn => fn(state));
   }
 }
 
-export const weddingAudio = new WeddingAudioPlayer();
+export const weddingAudio = new WeddingAudioManager();

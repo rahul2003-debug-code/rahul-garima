@@ -1,157 +1,214 @@
-// Centralized Wedding Configuration for Rahul Kumar & Garima Verma
-// All details verified from the official printed wedding invitation & user instructions
+import strings from './encodedStrings.json';
 
-const BASE = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') + '/';
+const decode = (s) => {
+  if (!s) return '';
+  if (Array.isArray(s)) return s.map(decode);
+  if (typeof window !== 'undefined' && window.atob) {
+    try {
+      return decodeURIComponent(escape(window.atob(s)));
+    } catch (e) {
+      return window.atob(s);
+    }
+  }
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(s, 'base64').toString('utf8');
+  }
+  return s;
+};
+
+export const H = {};
+for (const [k, v] of Object.entries(strings)) {
+  H[k] = decode(v);
+}
+
+export const BASE_URL = import.meta.env.BASE_URL || '/';
 
 export const WEDDING_DATA = {
   couple: {
     groom: {
-      nameHi: "चि० राहुल कुमार",
-      nameEn: "Rahul Kumar",
-      titleHi: "वर (दूल्हा)",
-      titleEn: "The Groom",
-      parentsHi: "स्व० लालसा देवी एवं श्री अशोक कुमार",
-      parentsEn: "Late Lalsa Devi & Shri Ashok Kumar",
-      addressHi: "ग्राम व पोस्ट — मसोन, जनपद — गाजीपुर (उ. प्र.) 233231",
-      image: `${BASE}images/groom.jpg`,
-      quote: "दो दिलों का पावन संगम, प्रेम, विश्वास और मर्यादा का अटूट बंधन।"
+      firstName: H.groomFirst,
+      fullName: H.groomFull,
+      title: H.groomTitle,
+      designation: H.groomDesig,
+      photo: `${BASE_URL}images/groom.jpg`,
+      grandParents: H.groomGrandparents,
+      parents: H.groomParents,
+      address: H.groomAddress,
+      badge: H.groomBadge
     },
     bride: {
-      nameHi: "आयु० गरिमा वर्मा",
-      nameEn: "Garima Verma",
-      titleHi: "वधू (दुल्हन)",
-      titleEn: "The Bride",
-      parentsHi: "श्रीमती पूनम वर्मा एवं श्री विनोद कुमार",
-      parentsEn: "Smt. Poonam Verma & Shri Vinod Kumar",
-      currentAddressHi: "शिवगंगा कॉलोनी, रमना, बी.एच.यू., वाराणसी (उ. प्र.) 221011",
-      permanentAddressHi: "ग्राम — भलवां, पोस्ट — रूपैधा, जनपद — मिर्जापुर (उ. प्र.) 231305",
-      image: `${BASE}images/bride.jpg`,
-      quote: "सात फेरों के संग नई शुरुआत, जीवन भर का अटूट साथ और आशीर्वाद।"
+      firstName: H.brideFirst,
+      fullName: H.brideFull,
+      title: H.brideTitle,
+      designation: H.brideDesig,
+      photo: `${BASE_URL}images/bride-portrait.jpg`,
+      grandParents: H.brideGrandparents,
+      parents: H.brideParents,
+      address: H.brideAddress,
+      badge: H.brideBadge
     }
   },
 
   invitationHeader: {
-    mangalAmantran: "॥ मंगल आमंत्रण ॥",
-    shlokaSanskrit: "वक्रतुण्ड महाकाय सूर्यकोटि समप्रभः।\nनिर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥",
-    shlokaMeaning: "हे वक्रतुण्ड, महाकाय, करोड़ों सूर्यों के समान तेजस्वी भगवान श्री गणेश! आप हमारे इस वैवाहिक कार्य को सदा निर्विघ्न संपन्न करें।",
-    welcomeText: "हमारे जीवन के इस शुभ अवसर पर आप सपरिवार पधारकर वर-वधू को अपना स्नेह एवं शुभाशीर्वाद प्रदान करें।"
+    ganeshMantra: H.ganeshMantra,
+    ganeshDoha: H.ganeshDoha,
+    kashiBlessing: H.kashiBlessing,
+    vishnuMantra: H.vishnuMantra,
+    sadaMangalam: H.sadaMangalam
   },
 
   invitationBody: {
-    bondTitle: "॥ परिणय बंधन ॥",
-    opening: "स्नेही स्वजन...... ईश्वर की असीम कृपा से",
-    requestMessage: "के इस सुमधुर अवसर पर आयोजित सभी मांगलिक कार्यक्रमों में पधारकर वर-वधू को शुभ आशीर्वाद प्रदान कर हमें अनुगृहीत करें। आपकी गरिमामयी उपस्थिति हमारे लिए सौभाग्य की बात होगी।",
-    specialNote: "नोट: बारात हमारे निवास स्थान से वाराणसी के लिए सायं 3 बजे प्रस्थान करेगी।",
-    invitedBy: "सादर आमंत्रित: श्री अशोक कुमार एवं समस्त परिवार"
-  },
-
-  familyDetails: {
-    darshanabhilashiTitle: "॥ दर्शनाभिलाषी ॥",
-    darshanabhilashiList: [
-      "रोहन कुमार",
-      "रोहित कुमार",
-      "अनिल कुमार",
-      "सुनील",
-      "विशाल",
-      "टुकटुक",
-      "विट्टू",
-      "प्रिंस",
-      "त्यागी",
-      "एवं समस्त परिवार व मित्रगण।"
-    ],
-    vineetTitle: "॥ विनीत ॥",
-    vineetName: "अशोक कुमार",
-    vineetAddress: "ग्राम व पोस्ट — मसोन, जनपद — गाजीपुर (उ. प्र.)"
+    bondTitle: H.bondTitle,
+    requestMessage: H.invitationRequest,
+    sang: H.sang,
+    coupleNames: H.coupleNames,
+    shayariAagrah: {
+      title: H.shayariTitle,
+      line1: H.shayariLine1,
+      line2: H.shayariLine2
+    }
   },
 
   events: [
     {
-      id: "tilak",
-      number: "कार्यक्रम 1",
-      title: "शुभ तिलक",
-      date: "04 नवम्बर 2026",
-      day: "बुधवार",
-      isoDateTime: "2026-11-04T10:00:00+05:30",
-      symbol: "🪔",
-      description: "रोली, अक्षत और शुभ तिलक के साथ मांगलिक कार्यों का पावन शुभारंभ।",
-      timeNote: "प्रातः 10:00 बजे",
-      venueNote: "निवास स्थान: मसोन, गाजीपुर"
+      id: 'tilak',
+      badge: 'मांगलिक उत्सव',
+      title: 'तिलक समारोह',
+      date: '04 नवम्बर 2026',
+      day: 'बुधवार',
+      time: 'प्रातः 10:00 बजे',
+      icon: 'tilak',
+      description: 'शुभ लग्न, तिलक एवं मिष्ठान्न वितरण समारोह। स्थान: निज निवास मसोन, गाजीपुर।',
+      isHighlight: false,
+      calendarEvent: {
+        title: `${H.coupleNames} - तिलक समारोह`,
+        start: '20261104T100000',
+        end: '20261104T140000',
+        location: 'निज निवास - ग्राम व पोस्ट मसोन, गाजीपुर'
+      }
     },
     {
-      id: "haldi",
-      number: "कार्यक्रम 2",
-      title: "शुभ हल्दी",
-      date: "09 नवम्बर 2026",
-      day: "सोमवार",
-      isoDateTime: "2026-11-09T10:00:00+05:30",
-      symbol: "🌼",
-      description: "हल्दी के सुनहरे रंग, मंगल गीतों की गूंज और आत्मीय स्नेह का उत्सव।",
-      timeNote: "प्रातः 10:00 बजे",
-      venueNote: "निवास स्थान: मसोन, गाजीपुर"
+      id: 'haldi',
+      badge: 'मांगलिक उत्सव',
+      title: 'शुभ हल्दी',
+      date: '09 नवम्बर 2026',
+      day: 'सोमवार',
+      time: 'प्रातः 10:00 बजे',
+      icon: 'haldi',
+      description: 'हल्दी रस्म एवं संगीत उत्सव। स्थान: निज निवास मसोन, गाजीपुर।',
+      isHighlight: false,
+      calendarEvent: {
+        title: `${H.coupleNames} - शुभ हल्दी`,
+        start: '20261109T100000',
+        end: '20261109T140000',
+        location: 'निज निवास - ग्राम व पोस्ट मसोन, गाजीपुर'
+      }
     },
     {
-      id: "vivah",
-      number: "कार्यक्रम 3",
-      title: "शुभ विवाह",
-      date: "11 नवम्बर 2026",
-      day: "बुधवार",
-      isoDateTime: "2026-11-11T19:00:00+05:30",
-      symbol: "💍",
-      isMainWedding: true,
-      description: "पवित्र अग्नि के समक्ष सात फेरे, जयमाला, पाणिग्रहण संस्कार एवं सिंदूर दान।",
-      specialNotice: "बारात प्रस्थान: सायं 3:00 बजे (निवास स्थान से वाराणसी के लिए)",
-      venueNote: "वाराणसी (Varanasi)"
+      id: 'shubh-vivah',
+      badge: H.vivahBadge,
+      title: H.shubhVivahTitle,
+      date: H.vivahDate,
+      fullDate: H.vivahDateFull,
+      day: 'बुधवार',
+      time: H.vivahTime,
+      icon: 'wedding',
+      description: H.vivahDesc,
+      isHighlight: true,
+      calendarEvent: {
+        title: `${H.coupleNames} - शुभ विवाह`,
+        start: '20261111T150000',
+        end: '20261112T030000',
+        location: `${H.venueName}, ${H.venueLocation}`
+      }
     },
     {
-      id: "vidaai",
-      number: "कार्यक्रम 4",
-      title: "विदाई",
-      date: "12 नवम्बर 2026",
-      day: "गुरुवार",
-      isoDateTime: "2026-11-12T09:00:00+05:30",
-      symbol: "🌸",
-      description: "सजल नयनों और असीम शुभाशीषों के साथ नवदंपति का मंगलमय गृह-प्रवेश मार्ग।",
-      timeNote: "प्रातः काल",
-      venueNote: "विवाह मंडप, वाराणसी"
+      id: 'vidaai',
+      badge: H.vidaaiBadge,
+      title: H.vidaaiTitle,
+      date: H.vidaaiDate,
+      fullDate: H.vidaaiDateFull,
+      day: 'गुरुवार',
+      time: H.vidaaiTime,
+      icon: 'vidaai',
+      description: H.vidaaiDesc,
+      isHighlight: false,
+      calendarEvent: {
+        title: `${H.coupleNames} - विदाई एवं वधू आगमन`,
+        start: '20261112T080000',
+        end: '20261112T120000',
+        location: 'निज निवास - ग्राम व पोस्ट मसोन, गाजीपुर'
+      }
     }
   ],
 
-  contacts: [
+  venue: {
+    name: H.venueName,
+    locationDetails: H.venueLocation,
+    shortCity: H.venueCity,
+    mapsQuery: 'Om Mangalam Lawn Ramna Varanasi',
+    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Om+Mangalam+Lawn+Ramna+Varanasi',
+    venueNote: H.venueNote,
+    directionsNote: H.venueLandmark
+  },
+
+  family: {
+    darshanabhilashiFamily: H.darshanabhilashiFamily,
+    darshanabhilashi: H.darshanabhilashiList,
+    vineet: {
+      name: H.vineetName,
+      address: H.vineetAddress
+    },
+    contacts: [
+      {
+        name: 'श्री अशोक कुमार (पिता)',
+        number: '8052797334',
+        label: 'मुख्य निमंत्रक'
+      },
+      {
+        name: 'रोहन कुमार (भ्राता)',
+        number: '8173087391',
+        label: 'वैवाहिक व्यवस्था'
+      }
+    ]
+  },
+
+  scannedCards: [
     {
-      name: "श्री अशोक कुमार (पिताजी)",
-      number: "8052797334",
-      displayNumber: "+91 80527 97334",
-      role: "मुख्य प्रेषक एवं स्वागतकर्ता"
+      id: 'cover',
+      name: 'मुख्य आवरण पृष्ठ (Front Cover)',
+      description: `${H.ganeshMantra} शुभ विवाह - ${H.coupleNames}`,
+      src: `${BASE_URL}images/invitation-cover.jpg`
     },
     {
-      name: "पारिवारिक संपर्क एवं व्यवस्था",
-      number: "8173087391",
-      displayNumber: "+91 81730 87391",
-      role: "अतिथि सत्कार एवं सहयोग"
+      id: 'schedule',
+      name: 'मांगलिक कार्यक्रम (Schedule)',
+      description: `${H.shubhVivahTitle} एवं ${H.vidaaiTitle}`,
+      src: `${BASE_URL}images/mangalik-karyakram.jpg`
+    },
+    {
+      id: 'inner',
+      name: 'परिणय एवं परिवार पृष्ठ (Family Details)',
+      description: 'वर-वधू परिचय, दर्शनाभिलाषी एवं विनीत',
+      src: `${BASE_URL}images/invitation-inner.jpg`
     }
   ],
 
-  printedScans: [
+  musicTracks: [
     {
-      id: "cover",
-      title: "शुभ निमंत्रण आवरण (कवर)",
-      description: "हस्तमुद्रित मूल आवरण — राहुल परिणय गरिमा",
-      src: `${BASE}images/invitation-cover.jpg`
+      id: 'hamari-shaadi',
+      title: H.track1Title,
+      artist: 'Vivah Special Song',
+      src: `${BASE_URL}audio/hamari-shaadi-mein.mp3`
     },
     {
-      id: "program",
-      title: "मांगलिक कार्यक्रम पत्रिका",
-      description: "चारों पावन कार्यक्रमों की मूल मुद्रित सूची",
-      src: `${BASE}images/mangalik-karyakram.jpg`
-    },
-    {
-      id: "inner",
-      title: "विस्तृत विवाह पत्रिका",
-      description: "पारिवारिक विवरण, दर्शनाभिलाषी एवं विनीत सूची",
-      src: `${BASE}images/invitation-inner.jpg`
+      id: 'shehnai',
+      title: H.track2Title,
+      artist: 'Royal Wedding Shehnai',
+      src: `${BASE_URL}audio/wedding-song.mp3`
     }
   ],
 
-  weddingTimestamp: new Date("2026-11-11T19:00:00+05:30").getTime(),
-  timezone: "Asia/Kolkata"
+  weddingTimestamp: new Date('2026-11-11T19:00:00+05:30').getTime(),
+  websiteUrl: 'https://rahul2003-debug-code.github.io/rahul-garima/'
 };

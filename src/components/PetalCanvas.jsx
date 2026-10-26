@@ -1,20 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export default function PetalCanvas({ enabled = true }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     if (!enabled) return;
-
-    // Check prefers-reduced-motion
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mediaQuery.matches) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let animationFrameId;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
+    let animationFrameId;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -24,47 +20,37 @@ export default function PetalCanvas({ enabled = true }) {
       height = canvas.height = window.innerHeight;
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
-    // Number of particles: fewer on mobile for optimal performance
-    const isMobile = window.innerWidth < 768;
-    const petalCount = isMobile ? 18 : 36;
-    const sparkleCount = isMobile ? 15 : 30;
+    // Number of particles suited for both mobile and desktop
+    const petalCount = window.innerWidth < 768 ? 24 : 38;
+    const sparkleCount = window.innerWidth < 768 ? 20 : 35;
 
     class Petal {
       constructor() {
         this.reset(true);
       }
 
-      reset(init = false) {
+      reset(initial = false) {
         this.x = Math.random() * width;
-        this.y = init ? Math.random() * height : -20;
-        this.size = Math.random() * 10 + 10; // 10-20px
+        this.y = initial ? Math.random() * height : -20;
+        this.size = Math.random() * 9 + 8; // 8 to 17px
         this.speedY = Math.random() * 1.2 + 0.8;
-        this.speedX = Math.random() * 1.5 - 0.75;
+        this.speedX = Math.random() * 1 - 0.5;
         this.rotation = Math.random() * 360;
-        this.rotSpeed = (Math.random() - 0.5) * 1.8;
-        this.swing = Math.random() * 2 * Math.PI;
-        this.swingSpeed = Math.random() * 0.02 + 0.01;
-        this.opacity = Math.random() * 0.4 + 0.5;
-
-        // Variety of petal colors: Royal Crimson, Deep Ruby, Gentle Rose Pink
-        const colors = [
-          "rgba(196, 27, 49, ",
-          "rgba(142, 14, 34, ",
-          "rgba(217, 72, 94, ",
-          "rgba(168, 24, 43, "
-        ];
-        this.baseColor = colors[Math.floor(Math.random() * colors.length)];
+        this.rotationSpeed = Math.random() * 1.5 - 0.75;
+        this.flip = Math.random() * Math.PI;
+        this.flipSpeed = Math.random() * 0.03 + 0.01;
+        this.colorType = Math.random(); // Rose red vs Marigold gold
       }
 
       update() {
-        this.swing += this.swingSpeed;
-        this.x += Math.sin(this.swing) * 1.2 + this.speedX;
         this.y += this.speedY;
-        this.rotation += this.rotSpeed;
+        this.x += Math.sin(this.y * 0.008) * 0.8 + this.speedX;
+        this.rotation += this.rotationSpeed;
+        this.flip += this.flipSpeed;
 
-        if (this.y > height + 20 || this.x < -30 || this.x > width + 30) {
+        if (this.y > height + 25 || this.x < -30 || this.x > width + 30) {
           this.reset(false);
         }
       }
@@ -73,30 +59,28 @@ export default function PetalCanvas({ enabled = true }) {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate((this.rotation * Math.PI) / 180);
-        ctx.fillStyle = `${this.baseColor}${this.opacity})`;
+        ctx.scale(Math.cos(this.flip), 1);
+
+        // Gradient for realistic rose petal
+        const grad = ctx.createRadialGradient(0, 0, 1, 0, 0, this.size);
+        if (this.colorType > 0.3) {
+          // Deep Velvet Rose Petal
+          grad.addColorStop(0, '#FF4D6D');
+          grad.addColorStop(0.6, '#C9184A');
+          grad.addColorStop(1, '#590D22');
+        } else {
+          // Golden Marigold Petal
+          grad.addColorStop(0, '#FFE066');
+          grad.addColorStop(0.7, '#F7B731');
+          grad.addColorStop(1, '#D48806');
+        }
+
+        ctx.fillStyle = grad;
         ctx.beginPath();
-        // Delicate curved rose petal shape
-        ctx.moveTo(0, -this.size / 2);
-        ctx.bezierCurveTo(
-          this.size / 2, -this.size / 2,
-          this.size / 1.6, this.size / 2,
-          0, this.size / 1.5
-        );
-        ctx.bezierCurveTo(
-          -this.size / 1.6, this.size / 2,
-          -this.size / 2, -this.size / 2,
-          0, -this.size / 2
-        );
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(this.size / 2, -this.size / 2, this.size, 0, 0, this.size);
+        ctx.bezierCurveTo(-this.size, 0, -this.size / 2, -this.size / 2, 0, 0);
         ctx.fill();
-
-        // Subtle petal vein highlight
-        ctx.strokeStyle = `rgba(255, 230, 200, ${this.opacity * 0.35})`;
-        ctx.lineWidth = 0.8;
-        ctx.beginPath();
-        ctx.moveTo(0, -this.size / 3);
-        ctx.quadraticCurveTo(this.size * 0.1, 0, 0, this.size / 2);
-        ctx.stroke();
-
         ctx.restore();
       }
     }
@@ -106,28 +90,29 @@ export default function PetalCanvas({ enabled = true }) {
         this.reset(true);
       }
 
-      reset(init = false) {
+      reset(initial = false) {
         this.x = Math.random() * width;
-        this.y = init ? Math.random() * height : -10;
-        this.size = Math.random() * 2 + 1;
-        this.speedY = Math.random() * 0.7 + 0.3;
-        this.opacity = Math.random() * 0.6 + 0.3;
-        this.pulse = Math.random() * Math.PI;
-        this.pulseSpeed = Math.random() * 0.05 + 0.02;
+        this.y = initial ? Math.random() * height : -10;
+        this.size = Math.random() * 2.2 + 0.8;
+        this.speedY = Math.random() * 0.6 + 0.4;
+        this.alpha = Math.random() * 0.8 + 0.2;
+        this.alphaSpeed = Math.random() * 0.02 + 0.01;
       }
 
       update() {
-        this.pulse += this.pulseSpeed;
         this.y += this.speedY;
+        this.alpha += Math.sin(this.y * 0.05) * 0.02;
         if (this.y > height + 10) {
           this.reset(false);
         }
       }
 
       draw() {
-        const currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(this.pulse));
         ctx.save();
-        ctx.fillStyle = `rgba(255, 220, 120, ${currentOpacity})`;
+        ctx.globalAlpha = Math.max(0.1, Math.min(1, this.alpha));
+        ctx.fillStyle = '#FFD700';
+        ctx.shadowColor = '#FFEAA7';
+        ctx.shadowBlur = 8;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -138,32 +123,26 @@ export default function PetalCanvas({ enabled = true }) {
     const petals = Array.from({ length: petalCount }, () => new Petal());
     const sparkles = Array.from({ length: sparkleCount }, () => new Sparkle());
 
-    let isDocumentVisible = true;
-    const handleVisibilityChange = () => {
-      isDocumentVisible = !document.hidden;
-    };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    const animate = () => {
+      ctx.clearRect(0, 0, width, height);
 
-    const render = () => {
-      if (isDocumentVisible) {
-        ctx.clearRect(0, 0, width, height);
-        sparkles.forEach((s) => {
-          s.update();
-          s.draw();
-        });
-        petals.forEach((p) => {
-          p.update();
-          p.draw();
-        });
+      for (let i = 0; i < sparkles.length; i++) {
+        sparkles[i].update();
+        sparkles[i].draw();
       }
-      animationFrameId = requestAnimationFrame(render);
+
+      for (let i = 0; i < petals.length; i++) {
+        petals[i].update();
+        petals[i].draw();
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    render();
+    animate();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
   }, [enabled]);
@@ -174,16 +153,14 @@ export default function PetalCanvas({ enabled = true }) {
     <canvas
       ref={canvasRef}
       style={{
-        position: "fixed",
+        position: 'fixed',
         top: 0,
         left: 0,
-        width: "100vw",
-        height: "100vh",
-        pointerEvents: "none",
-        zIndex: 5,
-        opacity: 0.95
+        width: '100vw',
+        height: '100vh',
+        pointerEvents: 'none',
+        zIndex: 50
       }}
-      aria-hidden="true"
     />
   );
 }
