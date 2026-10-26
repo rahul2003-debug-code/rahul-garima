@@ -1,20 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { Sparkles, Heart, Music, MailOpen, Volume2 } from 'lucide-react';
+import { Sparkles, Heart, MailOpen } from 'lucide-react';
 import { WEDDING_DATA } from '../config/weddingData';
 
 export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestName }) {
   const [isOpening, setIsOpening] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
+  const { invitationBody } = WEDDING_DATA;
 
   if (!isOpen) return null;
 
   const handleOpenEnvelope = () => {
     if (isOpening) return;
     setIsOpening(true);
-    setHasInteracted(true);
 
-    // Trigger celebration confetti with golden foil & rose colors
     try {
       confetti({
         particleCount: 80,
@@ -42,12 +40,10 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
       console.log('Confetti error:', e);
     }
 
-    // Play wedding song immediately
     if (onOpenCard) {
       onOpenCard();
     }
 
-    // Smooth transition into the main card
     setTimeout(() => {
       onClose();
     }, 1100);
@@ -59,7 +55,7 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
         position: 'fixed',
         inset: 0,
         zIndex: 99999,
-        backgroundColor: 'rgba(16, 0, 4, 0.94)',
+        background: 'rgba(10, 0, 2, 0.94)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         display: 'flex',
@@ -72,7 +68,6 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
         pointerEvents: isOpening ? 'none' : 'auto'
       }}
     >
-      {/* Floating Background Stars & Shimmer */}
       <div
         style={{
           position: 'absolute',
@@ -83,7 +78,6 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
         }}
       />
 
-      {/* Main Royal Envelope Container */}
       <div
         style={{
           position: 'relative',
@@ -92,7 +86,6 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
           perspective: '1200px'
         }}
       >
-        {/* Envelope Outer Shell */}
         <div
           onClick={handleOpenEnvelope}
           style={{
@@ -109,11 +102,9 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
             transition: 'transform 0.8s ease'
           }}
         >
-          {/* Ornate Corner Elements */}
           <div className="corner-ornament-tr" style={{ borderColor: 'var(--gold-light)' }} />
           <div className="corner-ornament-bl" style={{ borderColor: 'var(--gold-light)' }} />
 
-          {/* Top Sanskrit Blessing */}
           <div
             style={{
               display: 'inline-flex',
@@ -140,7 +131,6 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
             <Sparkles size={16} color="#FBE5A2" />
           </div>
 
-          {/* Subtitle */}
           <h3
             style={{
               fontFamily: 'var(--font-script)',
@@ -163,15 +153,13 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
               filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.6))'
             }}
           >
-            गरिमा संग राहुल
+            {invitationBody.coupleNames}
           </h2>
 
-          {/* Decorative Divider */}
           <div className="sacred-divider" style={{ margin: '14px auto 22px auto' }}>
             <span style={{ fontSize: '1.2rem', color: 'var(--gold-primary)' }}>🪔</span>
           </div>
 
-          {/* Personalized Recipient Tag (प्रतिष्ठा में) */}
           <div
             style={{
               background: 'rgba(255, 251, 242, 0.08)',
@@ -206,7 +194,6 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
             </div>
           </div>
 
-          {/* Golden Wax Seal Button in Center */}
           <div
             style={{
               display: 'flex',
@@ -219,77 +206,32 @@ export default function RoyalEnvelopeModal({ isOpen, onClose, onOpenCard, guestN
             <div
               className="animate-pulse-glow"
               style={{
-                width: 'clamp(74px, 16vw, 90px)',
-                height: 'clamp(74px, 16vw, 90px)',
+                width: '74px',
+                height: '74px',
                 borderRadius: '50%',
-                background: 'var(--gold-gradient-radial)',
-                border: '3px solid #FFF',
+                background: 'radial-gradient(circle, #D4AF37 0%, #AA771C 65%, #63430A 100%)',
+                boxShadow: '0 0 35px rgba(212, 175, 55, 0.7), inset 0 2px 6px rgba(255, 255, 255, 0.6)',
+                border: '3px solid #FFF5D6',
                 display: 'flex',
-                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 8px 30px rgba(212, 175, 55, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.8)',
                 color: '#2A0108',
-                transform: isOpening ? 'scale(1.3) rotate(45deg)' : 'scale(1)',
-                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                transition: 'transform 0.3s ease'
               }}
             >
-              <Heart size={28} fill="#2A0108" color="#2A0108" />
-              <span
-                style={{
-                  fontFamily: 'var(--font-serif-royal)',
-                  fontSize: '0.75rem',
-                  fontWeight: 900,
-                  letterSpacing: '1px'
-                }}
-              >
-                G & R
-              </span>
+              <MailOpen size={32} />
             </div>
 
             <div
+              className="gold-glow-text"
               style={{
-                fontFamily: 'var(--font-modern)',
-                fontSize: '0.92rem',
-                color: 'var(--gold-light)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontWeight: 600
+                fontFamily: 'var(--font-hindi-display)',
+                fontSize: 'clamp(1.05rem, 2.6vw, 1.25rem)',
+                letterSpacing: '1px'
               }}
             >
-              <MailOpen size={16} />
-              <span>कार्ड खोलने के लिए यहाँ टच करें</span>
+              ॥ निमंत्रण पत्र खोलने के लिए स्पर्श करें ॥
             </div>
-
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '0.8rem',
-                color: '#E0CDA9',
-                opacity: 0.85
-              }}
-            >
-              <Music size={13} />
-              <span>(शुभ विवाह गीत एवं शहनाई के साथ)</span>
-            </div>
-          </div>
-
-          {/* Action Open Button */}
-          <div style={{ marginTop: '24px' }}>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleOpenEnvelope();
-              }}
-              className="btn-royal-gold"
-              style={{ width: '100%', maxWidth: '320px' }}
-            >
-              <Volume2 size={18} />
-              <span>निमंत्रण पत्र देखें (Open Card)</span>
-            </button>
           </div>
         </div>
       </div>

@@ -20,7 +20,6 @@ export default function Footer({ onReplayEnvelope }) {
       }}
     >
       <div className="container">
-        {/* Lord Ganesha Shubh Mantra */}
         <div style={{ marginBottom: '16px' }}>
           <span style={{ fontSize: '1.8rem', color: 'var(--gold-primary)' }}>🪔</span>
         </div>
@@ -57,10 +56,10 @@ export default function Footer({ onReplayEnvelope }) {
             marginBottom: '24px'
           }}
         >
-          विनीत : {family.vineet.name} एवं {family.darshanabhilashi[family.darshanabhilashi.length - 1]}
+          विनीत : {family.vineet.name} ({family.vineet.address})
         </div>
 
-        {/* Replay Envelope and Back to Top Buttons */}
+        {/* Buttons */}
         <div
           style={{
             display: 'flex',
@@ -89,12 +88,12 @@ export default function Footer({ onReplayEnvelope }) {
             gap: '6px',
             fontSize: '0.85rem',
             color: 'var(--text-muted)',
-            fontFamily: 'var(--font-modern)'
+            fontFamily: 'var(--font-serif-royal)'
           }}
         >
-          <span>गरिमा संग राहुल</span>
-          <Heart size={14} fill="#FF4D6D" color="#FF4D6D" />
-          <span>शुभ विवाह • 11 नवम्बर 2026</span>
+          <span>With Blessings of Family & Friends</span>
+          <Heart size={14} fill="#D4AF37" color="#D4AF37" />
+          <span>Rahul & Garima 2026</span>
         </div>
       </div>
     </footer>

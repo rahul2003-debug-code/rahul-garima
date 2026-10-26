@@ -9,12 +9,11 @@ export default function WishesRSVP() {
   const [attending, setAttending] = useState('yes');
   const [submitted, setSubmitted] = useState(false);
 
-  // Default sample warm blessings to populate the wall
   const initialWishes = [
     {
       id: 1,
       name: 'मामा जी एवं परिवार',
-      message: 'गरिमा बिटिया और राहुल दामाद जी को शुभ विवाह की अनंत मंगलकामनाएं! देवाधिदेव महादेव का आशीर्वाद सदैव बना रहे।',
+      message: 'राहुल भैया और गरिमा भाभी को शुभ विवाह की अनंत मंगलकामनाएं! भगवान श्री गणेश जी का आशीर्वाद सदैव बना रहे।',
       attending: 'yes',
       time: 'हाल ही में'
     },
@@ -31,7 +30,7 @@ export default function WishesRSVP() {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('wedding_wishes_garima_rahul');
+      const saved = localStorage.getItem('wedding_wishes_rahul_garima');
       if (saved) {
         setWishes(JSON.parse(saved));
       }
@@ -55,14 +54,13 @@ export default function WishesRSVP() {
     const updated = [newWish, ...wishes];
     setWishes(updated);
     try {
-      localStorage.setItem('wedding_wishes_garima_rahul', JSON.stringify(updated));
+      localStorage.setItem('wedding_wishes_rahul_garima', JSON.stringify(updated));
     } catch (err) {
       console.log('save wish error:', err);
     }
 
     setSubmitted(true);
 
-    // Confetti celebration
     try {
       confetti({
         particleCount: 70,
@@ -74,7 +72,6 @@ export default function WishesRSVP() {
       console.log('confetti error:', err);
     }
 
-    // Reset fields
     setName('');
     setMessage('');
     setTimeout(() => setSubmitted(false), 5000);
@@ -82,7 +79,7 @@ export default function WishesRSVP() {
 
   return (
     <section
-      id="rsvp"
+      id="rsvp-wishes"
       style={{
         position: 'relative',
         padding: 'clamp(40px, 6vw, 70px) 0',
@@ -94,7 +91,7 @@ export default function WishesRSVP() {
         <div style={{ textAlign: 'center', marginBottom: '36px' }}>
           <div className="royal-badge" style={{ marginBottom: '12px' }}>
             <Sparkles size={14} color="var(--gold-light)" />
-            <span>वर-वधू को शुभ आशीष</span>
+            <span>आशीर्वाद एवं उपस्थिति पुष्टि</span>
             <Sparkles size={14} color="var(--gold-light)" />
           </div>
 
@@ -106,7 +103,7 @@ export default function WishesRSVP() {
               margin: '0 0 10px 0'
             }}
           >
-            शुभकामनाएं एवं उपस्थिति (RSVP)
+            शुभकामनाएं एवं RSVP
           </h2>
 
           <div className="sacred-divider">
@@ -123,186 +120,186 @@ export default function WishesRSVP() {
             margin: '0 auto'
           }}
         >
-          {/* Form Box */}
+          {/* Wish / RSVP Form */}
           <div className="royal-card">
             <div className="corner-ornament-tr" />
             <div className="corner-ornament-bl" />
 
             <h3
+              className="gold-glow-text"
               style={{
                 fontFamily: 'var(--font-hindi-display)',
-                fontSize: '1.45rem',
-                color: 'var(--gold-light)',
-                marginBottom: '16px'
+                fontSize: '1.5rem',
+                margin: '0 0 16px 0',
+                textAlign: 'center'
               }}
             >
-              अपनी मंगलकामनाएं प्रेषित करें :
+              वर-वधू को आशीर्वाद प्रेषित करें
             </h3>
 
-            {submitted && (
+            {submitted ? (
               <div
                 style={{
-                  background: 'rgba(37, 211, 102, 0.15)',
-                  border: '1px solid #25D366',
-                  borderRadius: '12px',
-                  padding: '12px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  color: '#4ade80',
-                  fontSize: '0.9rem',
-                  marginBottom: '18px'
+                  background: 'rgba(40, 167, 69, 0.15)',
+                  border: '1px solid #28a745',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  textAlign: 'center'
                 }}
               >
-                <CheckCircle size={18} />
-                <span>आपका शुभाशीर्वाद सफलतापूर्वक दर्ज हो गया है! धन्यवाद।</span>
+                <CheckCircle size={44} color="#28a745" style={{ margin: '0 auto 12px auto' }} />
+                <h4 style={{ color: '#FFF', margin: '0 0 6px 0', fontFamily: 'var(--font-hindi-display)' }}>
+                  आपका आशीर्वाद स्वीकार हुआ!
+                </h4>
+                <p style={{ color: 'var(--cream-ivory)', margin: 0, fontSize: '0.9rem' }}>
+                  नवदम्पति को आपकी स्नेहभरी शुभकामनाएं प्रेषित कर दी गई हैं।
+                </p>
               </div>
-            )}
-
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontFamily: 'var(--font-hindi-body)',
-                    fontSize: '0.88rem',
-                    color: 'var(--gold-light)',
-                    marginBottom: '6px'
-                  }}
-                >
-                  आपका नाम (Your Name) *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="उदा. राजेश कुमार वर्मा"
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    background: 'rgba(255, 255, 255, 0.07)',
-                    border: '1px solid var(--gold-border)',
-                    borderRadius: '12px',
-                    color: '#FFF',
-                    fontSize: '0.95rem',
-                    outline: 'none'
-                  }}
-                />
-              </div>
-
-              <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontFamily: 'var(--font-hindi-body)',
-                    fontSize: '0.88rem',
-                    color: 'var(--gold-light)',
-                    marginBottom: '6px'
-                  }}
-                >
-                  उपस्थिति की स्थिति (RSVP Status)
-                </label>
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
                   <label
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      cursor: 'pointer',
-                      fontSize: '0.88rem',
-                      color: 'var(--cream-ivory)'
+                      display: 'block',
+                      fontFamily: 'var(--font-hindi-body)',
+                      color: 'var(--gold-light)',
+                      fontSize: '0.9rem',
+                      marginBottom: '6px'
                     }}
                   >
-                    <input
-                      type="radio"
-                      name="attending"
-                      value="yes"
-                      checked={attending === 'yes'}
-                      onChange={() => setAttending('yes')}
-                      style={{ accentColor: 'var(--gold-primary)' }}
-                    />
-                    <span>सपरिवार अवश्य पधारेंगे 🎉</span>
+                    आपका शुभ नाम * :
                   </label>
-
-                  <label
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      cursor: 'pointer',
-                      fontSize: '0.88rem',
-                      color: 'var(--cream-ivory)'
-                    }}
-                  >
-                    <input
-                      type="radio"
-                      name="attending"
-                      value="wishes"
-                      checked={attending === 'wishes'}
-                      onChange={() => setAttending('wishes')}
-                      style={{ accentColor: 'var(--gold-primary)' }}
-                    />
-                    <span>दूर से शुभ आशीष भेजते हैं ❤️</span>
-                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="उदा. श्री सतीश चौबे"
+                    className="royal-input"
+                  />
                 </div>
-              </div>
 
-              <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontFamily: 'var(--font-hindi-body)',
-                    fontSize: '0.88rem',
-                    color: 'var(--gold-light)',
-                    marginBottom: '6px'
-                  }}
-                >
-                  वर-वधू के लिए शुभकामना संदेश (Blessings)
-                </label>
-                <textarea
-                  rows={3}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="नवदम्पति को अपना मंगल आशीर्वाद एवं बधाई संदेश लिखें..."
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    background: 'rgba(255, 255, 255, 0.07)',
-                    border: '1px solid var(--gold-border)',
-                    borderRadius: '12px',
-                    color: '#FFF',
-                    fontSize: '0.95rem',
-                    outline: 'none',
-                    resize: 'vertical'
-                  }}
-                />
-              </div>
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontFamily: 'var(--font-hindi-body)',
+                      color: 'var(--gold-light)',
+                      fontSize: '0.9rem',
+                      marginBottom: '6px'
+                    }}
+                  >
+                    क्या आप विवाह में पधार रहे हैं?
+                  </label>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <label
+                      style={{
+                        flex: 1,
+                        background: attending === 'yes' ? 'rgba(212, 175, 55, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                        border: attending === 'yes' ? '1.5px solid var(--gold-primary)' : '1px solid var(--gold-border)',
+                        borderRadius: '12px',
+                        padding: '10px',
+                        textAlign: 'center',
+                        cursor: 'pointer',
+                        color: attending === 'yes' ? 'var(--gold-light)' : 'var(--cream-ivory)',
+                        fontSize: '0.88rem'
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name="rsvp"
+                        value="yes"
+                        checked={attending === 'yes'}
+                        onChange={() => setAttending('yes')}
+                        style={{ display: 'none' }}
+                      />
+                      <span>🌸 जी हाँ, अवश्य आएंगे</span>
+                    </label>
 
-              <button type="submit" className="btn-royal-gold" style={{ marginTop: '4px' }}>
-                <Send size={16} />
-                <span>शुभकामनाएं भेजें (Submit Blessing)</span>
-              </button>
-            </form>
+                    <label
+                      style={{
+                        flex: 1,
+                        background: attending === 'wishes' ? 'rgba(212, 175, 55, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                        border: attending === 'wishes' ? '1.5px solid var(--gold-primary)' : '1px solid var(--gold-border)',
+                        borderRadius: '12px',
+                        padding: '10px',
+                        textAlign: 'center',
+                        cursor: 'pointer',
+                        color: attending === 'wishes' ? 'var(--gold-light)' : 'var(--cream-ivory)',
+                        fontSize: '0.88rem'
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name="rsvp"
+                        value="wishes"
+                        checked={attending === 'wishes'}
+                        onChange={() => setAttending('wishes')}
+                        style={{ display: 'none' }}
+                      />
+                      <span>💐 केवल शुभाशीर्वाद</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontFamily: 'var(--font-hindi-body)',
+                      color: 'var(--gold-light)',
+                      fontSize: '0.9rem',
+                      marginBottom: '6px'
+                    }}
+                  >
+                    शुभकामना संदेश :
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="वर-वधू के लिए अपना स्नेह एवं आशीर्वाद लिखें..."
+                    className="royal-input"
+                    style={{ resize: 'vertical' }}
+                  />
+                </div>
+
+                <button type="submit" className="btn-royal-gold" style={{ width: '100%' }}>
+                  <Send size={16} />
+                  <span>आशीर्वाद संदेश भेजें</span>
+                </button>
+              </form>
+            )}
           </div>
 
-          {/* Real-time Wishes Wall */}
+          {/* Live Blessings Wall */}
           <div className="royal-card">
             <div className="corner-ornament-tr" />
             <div className="corner-ornament-bl" />
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
-              <Heart size={20} fill="var(--gold-primary)" color="var(--gold-primary)" />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '16px',
+                borderBottom: '1px solid rgba(212, 175, 55, 0.25)',
+                paddingBottom: '10px'
+              }}
+            >
               <h3
+                className="gold-glow-text"
                 style={{
                   fontFamily: 'var(--font-hindi-display)',
-                  fontSize: '1.45rem',
-                  color: 'var(--gold-light)',
+                  fontSize: '1.4rem',
                   margin: 0
                 }}
               >
-                आशीर्वाद दीवार (Blessings Wall)
+                स्नेह एवं शुभाशीर्वाद स्तम्भ
               </h3>
+              <span style={{ fontSize: '0.85rem', color: 'var(--gold-light)', fontWeight: 600 }}>
+                {wishes.length} संदेश
+              </span>
             </div>
 
             <div
@@ -310,19 +307,19 @@ export default function WishesRSVP() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '12px',
-                maxHeight: '360px',
+                maxHeight: '380px',
                 overflowY: 'auto',
                 paddingRight: '6px'
               }}
             >
-              {wishes.map((item) => (
+              {wishes.map((w) => (
                 <div
-                  key={item.id}
+                  key={w.id}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
+                    background: 'rgba(255, 255, 255, 0.04)',
                     border: '1px solid rgba(212, 175, 55, 0.2)',
                     borderRadius: '14px',
-                    padding: '14px 16px'
+                    padding: '12px 14px'
                   }}
                 >
                   <div
@@ -330,52 +327,27 @@ export default function WishesRSVP() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      marginBottom: '6px'
+                      marginBottom: '4px'
                     }}
                   >
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-hindi-display)',
-                        fontSize: '1.05rem',
-                        color: 'var(--gold-light)'
-                      }}
-                    >
-                      {item.name}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: '0.75rem',
-                        color: 'var(--text-muted)'
-                      }}
-                    >
-                      {item.time}
+                    <div style={{ fontWeight: 600, color: 'var(--gold-light)', fontSize: '0.95rem' }}>
+                      {w.name}
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                      {w.time}
                     </span>
                   </div>
-
                   <p
                     style={{
+                      margin: 0,
                       fontFamily: 'var(--font-hindi-body)',
                       fontSize: '0.9rem',
                       color: 'var(--cream-ivory)',
-                      lineHeight: 1.5,
-                      margin: 0
+                      lineHeight: 1.5
                     }}
                   >
-                    "{item.message}"
+                    "{w.message}"
                   </p>
-
-                  <div
-                    style={{
-                      marginTop: '8px',
-                      fontSize: '0.78rem',
-                      color: item.attending === 'yes' ? '#4ade80' : 'var(--gold-light)',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}
-                  >
-                    <span>{item.attending === 'yes' ? '🎉 अवश्य पधारेंगे' : '❤️ सादर शुभाशीर्वाद'}</span>
-                  </div>
                 </div>
               ))}
             </div>

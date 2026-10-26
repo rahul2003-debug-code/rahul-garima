@@ -1,14 +1,38 @@
-import { Calendar, Clock, MapPin, Sparkles, HeartHandshake, Compass } from 'lucide-react';
+import { Calendar, Clock, MapPin, Sparkles, AlertCircle, Compass, Download } from 'lucide-react';
 import { WEDDING_DATA } from '../config/weddingData';
 
 export default function MangalikSchedule() {
-  const { events, venue } = WEDDING_DATA;
+  const { events, venue, invitationBody } = WEDDING_DATA;
 
   const createCalendarUrl = (ev) => {
     const title = encodeURIComponent(ev.calendarEvent.title);
     const dates = `${ev.calendarEvent.start}/${ev.calendarEvent.end}`;
     const location = encodeURIComponent(ev.calendarEvent.location);
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&location=${location}`;
+  };
+
+  const downloadIcs = (ev) => {
+    const icsData = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Rahul Kumar Wedding//HI',
+      'BEGIN:VEVENT',
+      `SUMMARY:${ev.calendarEvent.title}`,
+      `DESCRIPTION:${ev.description}`,
+      `LOCATION:${ev.calendarEvent.location}`,
+      `DTSTART:${ev.calendarEvent.start}`,
+      `DTEND:${ev.calendarEvent.end}`,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute('download', `${ev.id}-rahul-wedding.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -45,14 +69,14 @@ export default function MangalikSchedule() {
           </div>
         </div>
 
-        {/* Schedule Cards */}
+        {/* 4 Auspicious Schedule Cards */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: 'clamp(20px, 4vw, 32px)',
-            maxWidth: '940px',
-            margin: '0 auto 40px auto'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: 'clamp(20px, 3.5vw, 30px)',
+            maxWidth: '1100px',
+            margin: '0 auto 36px auto'
           }}
         >
           {events.map((ev) => (
@@ -64,8 +88,11 @@ export default function MangalikSchedule() {
                   ? '2px solid var(--gold-primary)'
                   : '1px solid var(--gold-border)',
                 background: ev.isHighlight
-                  ? 'linear-gradient(145deg, rgba(62, 5, 17, 0.9) 0%, rgba(30, 2, 7, 0.9) 100%)'
-                  : 'var(--royal-maroon-card)'
+                  ? 'linear-gradient(145deg, rgba(65, 5, 18, 0.95) 0%, rgba(32, 2, 8, 0.95) 100%)'
+                  : 'var(--royal-maroon-card)',
+                boxShadow: ev.isHighlight
+                  ? '0 15px 40px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.4)'
+                  : '0 8px 25px rgba(0,0,0,0.6)'
               }}
             >
               <div className="corner-ornament-tr" />
@@ -73,27 +100,36 @@ export default function MangalikSchedule() {
 
               <div
                 style={{
-                  display: 'inline-flex',
+                  display: 'flex',
                   alignItems: 'center',
-                  gap: '6px',
-                  background: ev.isHighlight ? 'var(--gold-gradient)' : 'rgba(212, 175, 55, 0.15)',
-                  color: ev.isHighlight ? '#2A0108' : 'var(--gold-light)',
-                  padding: '4px 16px',
-                  borderRadius: '999px',
-                  fontSize: '0.82rem',
-                  fontWeight: 700,
-                  marginBottom: '16px'
+                  justifyContent: 'space-between',
+                  marginBottom: '14px'
                 }}
               >
-                <Sparkles size={13} />
-                <span>{ev.badge}</span>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    background: ev.isHighlight ? 'var(--gold-gradient)' : 'rgba(212, 175, 55, 0.15)',
+                    color: ev.isHighlight ? '#2A0108' : 'var(--gold-light)',
+                    padding: '4px 14px',
+                    borderRadius: '999px',
+                    fontSize: '0.8rem',
+                    fontWeight: 700
+                  }}
+                >
+                  <Sparkles size={12} />
+                  <span>{ev.badge}</span>
+                </div>
+                <span style={{ fontSize: '1.4rem' }}>{ev.symbol}</span>
               </div>
 
               <h3
                 className="gold-glow-text"
                 style={{
                   fontFamily: 'var(--font-hindi-display)',
-                  fontSize: 'clamp(1.6rem, 3.8vw, 2.1rem)',
+                  fontSize: 'clamp(1.5rem, 3.5vw, 1.9rem)',
                   margin: '0 0 12px 0'
                 }}
               >
@@ -104,59 +140,136 @@ export default function MangalikSchedule() {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '10px',
+                  gap: '8px',
                   fontFamily: 'var(--font-hindi-body)',
-                  fontSize: '1rem',
+                  fontSize: '0.95rem',
                   color: 'var(--cream-ivory)',
-                  marginBottom: '18px'
+                  marginBottom: '14px'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Calendar size={18} color="var(--gold-primary)" />
+                  <Calendar size={17} color="var(--gold-primary)" />
                   <span style={{ fontWeight: 600, color: 'var(--gold-light)' }}>
                     {ev.date}, {ev.day}
                   </span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Clock size={18} color="var(--gold-primary)" />
+                  <Clock size={17} color="var(--gold-primary)" />
                   <span>{ev.time}</span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <MapPin size={17} color="var(--gold-primary)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <span style={{ fontSize: '0.88rem', color: 'var(--text-muted)' }}>{ev.location}</span>
                 </div>
               </div>
 
               <p
                 style={{
                   fontFamily: 'var(--font-hindi-body)',
-                  fontSize: '0.92rem',
+                  fontSize: '0.9rem',
                   color: 'var(--text-muted)',
                   lineHeight: 1.6,
-                  marginBottom: '22px'
+                  marginBottom: '18px'
                 }}
               >
                 {ev.description}
               </p>
 
-              <div style={{ marginTop: 'auto' }}>
+              {ev.specialNotice && (
+                <div
+                  style={{
+                    background: 'rgba(212, 175, 55, 0.15)',
+                    border: '1px dashed var(--gold-primary)',
+                    borderRadius: '12px',
+                    padding: '8px 12px',
+                    marginBottom: '16px',
+                    color: 'var(--gold-light)',
+                    fontSize: '0.86rem',
+                    fontFamily: 'var(--font-hindi-display)',
+                    fontWeight: 600
+                  }}
+                >
+                  🚨 {ev.specialNotice}
+                </div>
+              )}
+
+              <div style={{ marginTop: 'auto', display: 'flex', gap: '8px' }}>
                 <a
                   href={createCalendarUrl(ev)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-royal-outline"
-                  style={{ width: '100%', fontSize: '0.88rem' }}
+                  style={{ flex: 1, fontSize: '0.82rem', padding: '8px 10px' }}
                 >
-                  <Calendar size={15} />
-                  <span>Google Calendar में जोड़ें</span>
+                  <Calendar size={14} />
+                  <span>Google Calendar</span>
                 </a>
+
+                <button
+                  onClick={() => downloadIcs(ev)}
+                  className="btn-royal-outline"
+                  style={{ fontSize: '0.82rem', padding: '8px 10px' }}
+                  title="Apple / Outlook (.ICS)"
+                >
+                  <Download size={14} />
+                  <span>.ICS</span>
+                </button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Grand Venue Highlight Banner */}
+        {/* Special Baraat Departure Notice Banner */}
+        <div
+          className="royal-card animate-pulse-glow"
+          style={{
+            maxWidth: '820px',
+            margin: '0 auto 36px auto',
+            textAlign: 'center',
+            border: '2px solid var(--gold-primary)',
+            background: 'linear-gradient(135deg, rgba(70, 5, 18, 0.95) 0%, rgba(35, 2, 8, 0.95) 100%)',
+            padding: '20px 24px'
+          }}
+        >
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: 'var(--gold-gradient)',
+              color: '#2A0108',
+              fontFamily: 'var(--font-hindi-display)',
+              fontWeight: 700,
+              padding: '4px 18px',
+              borderRadius: '999px',
+              fontSize: '0.9rem',
+              marginBottom: '10px'
+            }}
+          >
+            <AlertCircle size={16} />
+            <span>विशेष बारात सूचना</span>
+          </div>
+
+          <div
+            className="gold-glow-text"
+            style={{
+              fontFamily: 'var(--font-hindi-display)',
+              fontSize: 'clamp(1.15rem, 3vw, 1.45rem)',
+              lineHeight: 1.6,
+              fontWeight: 700
+            }}
+          >
+            “{invitationBody.specialNote}”
+          </div>
+        </div>
+
+        {/* Venue Highlight Banner */}
         <div
           className="royal-card"
           style={{
-            maxWidth: '940px',
+            maxWidth: '820px',
             margin: '0 auto',
             textAlign: 'center',
             border: '2px solid var(--gold-primary)',
@@ -190,14 +303,14 @@ export default function MangalikSchedule() {
           <p
             style={{
               fontFamily: 'var(--font-hindi-body)',
-              fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
+              fontSize: 'clamp(0.95rem, 2.4vw, 1.15rem)',
               color: 'var(--cream-ivory)',
               maxWidth: '720px',
-              margin: '0 auto 20px auto',
+              margin: '0 auto 18px auto',
               lineHeight: 1.6
             }}
           >
-            समस्त वैवाहिक कार्यक्रम <strong>{venue.name}</strong>, {venue.locationDetails} से सम्पन्न होगा।
+            {venue.venueNote}
           </p>
 
           <div

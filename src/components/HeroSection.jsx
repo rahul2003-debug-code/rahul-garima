@@ -3,8 +3,8 @@ import { Heart, Calendar, MapPin, Sparkles, BookOpen } from 'lucide-react';
 import { WEDDING_DATA } from '../config/weddingData';
 
 export default function HeroSection({ onOpenOriginalCard }) {
-  const { couple, weddingTimestamp, events, venue } = WEDDING_DATA;
-  const mainEvent = events.find(e => e.isHighlight) || events[0];
+  const { couple, weddingTimestamp, events, venue, invitationBody } = WEDDING_DATA;
+  const mainEvent = events.find(e => e.isHighlight) || events[2] || events[0];
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -37,10 +37,9 @@ export default function HeroSection({ onOpenOriginalCard }) {
     return () => clearInterval(timer);
   }, [weddingTimestamp]);
 
-  // Google Calendar URL generator
   const createGoogleCalendarUrl = () => {
-    const title = encodeURIComponent("गरिमा संग राहुल - शुभ विवाह");
-    const details = encodeURIComponent("देवाधिदेव बाबा श्री काशी विश्वनाथ जी की असीम अनुकम्पा से गरिमा एवं राहुल के परिणय सूत्र बन्धन समारोह।");
+    const title = encodeURIComponent("राहुल संग गरिमा - शुभ विवाह");
+    const details = encodeURIComponent("भगवान श्री गणेश जी की असीम अनुकम्पा से राहुल एवं गरिमा का शुभ विवाह। वैवाहिक स्थल: ओम् मंगलम् लॉन, रमना, वाराणसी।");
     const location = encodeURIComponent(venue.locationDetails);
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261111T133000Z/20261111T213000Z&details=${details}&location=${location}`;
   };
@@ -56,7 +55,7 @@ export default function HeroSection({ onOpenOriginalCard }) {
       }}
     >
       <div className="container">
-        {/* Shubh Vivah Calligraphy Badge */}
+        {/* Top Auspicious Badge */}
         <div style={{ marginBottom: '20px' }}>
           <div className="royal-badge">
             <Sparkles size={14} color="var(--gold-light)" />
@@ -65,7 +64,7 @@ export default function HeroSection({ onOpenOriginalCard }) {
           </div>
         </div>
 
-        {/* Grand Hindi Couple Names */}
+        {/* Couple Title Names */}
         <h1
           className="gold-text-gradient"
           style={{
@@ -76,34 +75,33 @@ export default function HeroSection({ onOpenOriginalCard }) {
             filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.8))'
           }}
         >
-          गरिमा संग राहुल
+          {invitationBody.coupleNames}
         </h1>
 
-        <p
+        <div
           style={{
             fontFamily: 'var(--font-script)',
-            fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
+            fontSize: 'clamp(1.6rem, 4.5vw, 2.4rem)',
             color: 'var(--gold-light)',
-            margin: '0 0 28px 0',
-            fontWeight: 400
+            marginBottom: '32px'
           }}
         >
-          Together Forever in Love & Harmony
-        </p>
+          {invitationBody.coupleSubtitle}
+        </div>
 
-        {/* Couple Portraits inside Royal Arched Frames */}
+        {/* Royal Arched Jharokhas Side by Side */}
         <div
           style={{
             display: 'flex',
-            flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'center',
+            flexWrap: 'wrap',
             gap: 'clamp(20px, 4vw, 44px)',
             margin: '0 auto 36px auto',
             maxWidth: '840px'
           }}
         >
-          {/* Bride Jharokha */}
+          {/* Groom Jharokha (Rahul Kumar) */}
           <div
             style={{
               flex: '1 1 260px',
@@ -118,119 +116,7 @@ export default function HeroSection({ onOpenOriginalCard }) {
                 position: 'relative',
                 width: 'clamp(220px, 44vw, 270px)',
                 height: 'clamp(290px, 58vw, 360px)',
-                borderRadius: '135px 135px 24px 24px', // Royal arched dome shape
-                border: '3px solid var(--gold-primary)',
-                boxShadow: '0 18px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(212, 175, 55, 0.45)',
-                overflow: 'hidden',
-                background: 'linear-gradient(180deg, #4A030D 0%, #150003 100%)',
-                padding: '5px'
-              }}
-            >
-              <img
-                src={couple.bride.photo}
-                alt={couple.bride.fullName}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'center 10%',
-                  borderRadius: '128px 128px 20px 20px',
-                  display: 'block'
-                }}
-              />
-            </div>
-
-            {/* Royal Placard Below Bride Photo */}
-            <div style={{ marginTop: '16px', textAlign: 'center' }}>
-              <div
-                className="royal-badge"
-                style={{
-                  marginBottom: '8px',
-                  background: 'rgba(212, 175, 55, 0.18)',
-                  border: '1px solid var(--gold-primary)',
-                  color: 'var(--gold-light)'
-                }}
-              >
-                वधू (दुल्हन)
-              </div>
-              <h3
-                className="gold-glow-text"
-                style={{
-                  fontFamily: 'var(--font-hindi-display)',
-                  fontSize: 'clamp(1.4rem, 3.5vw, 1.8rem)',
-                  margin: '0 0 4px 0',
-                  fontWeight: 700
-                }}
-              >
-                {couple.bride.fullName}
-              </h3>
-              <div
-                style={{
-                  fontFamily: 'var(--font-modern)',
-                  fontSize: '0.88rem',
-                  color: 'var(--text-muted)'
-                }}
-              >
-                ({couple.bride.designation})
-              </div>
-            </div>
-          </div>
-
-          {/* Central Hast Melap Heart Flourish */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '0 8px'
-            }}
-          >
-            <div
-              className="animate-pulse-glow"
-              style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '50%',
-                background: 'var(--gold-gradient-radial)',
-                border: '2px solid #FFF',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 0 25px rgba(212, 175, 55, 0.6)'
-              }}
-            >
-              <Heart size={30} fill="#2A0108" color="#2A0108" />
-            </div>
-            <span
-              style={{
-                fontFamily: 'var(--font-hindi-display)',
-                fontSize: '1.2rem',
-                color: 'var(--gold-light)',
-                fontWeight: 600
-              }}
-            >
-              संग
-            </span>
-          </div>
-
-          {/* Groom Jharokha */}
-          <div
-            style={{
-              flex: '1 1 260px',
-              maxWidth: '320px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}
-          >
-            <div
-              style={{
-                position: 'relative',
-                width: 'clamp(220px, 44vw, 270px)',
-                height: 'clamp(290px, 58vw, 360px)',
-                borderRadius: '135px 135px 24px 24px', // Royal arched dome shape
+                borderRadius: '135px 135px 24px 24px',
                 border: '3px solid var(--gold-primary)',
                 boxShadow: '0 18px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(212, 175, 55, 0.45)',
                 overflow: 'hidden',
@@ -252,7 +138,6 @@ export default function HeroSection({ onOpenOriginalCard }) {
               />
             </div>
 
-            {/* Royal Placard Below Groom Photo */}
             <div style={{ marginTop: '16px', textAlign: 'center' }}>
               <div
                 className="royal-badge"
@@ -263,7 +148,7 @@ export default function HeroSection({ onOpenOriginalCard }) {
                   color: 'var(--gold-light)'
                 }}
               >
-                वर (दूल्हा)
+                {couple.groom.badge}
               </div>
               <h3
                 className="gold-glow-text"
@@ -284,6 +169,117 @@ export default function HeroSection({ onOpenOriginalCard }) {
                 }}
               >
                 ({couple.groom.designation})
+              </div>
+            </div>
+          </div>
+
+          {/* Central Sang Flourish */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              padding: '0 8px'
+            }}
+          >
+            <div
+              className="animate-pulse-glow"
+              style={{
+                width: '64px',
+                height: '64px',
+                borderRadius: '50%',
+                background: 'var(--gold-gradient-radial)',
+                border: '2px solid #FFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 0 30px rgba(212, 175, 55, 0.6)'
+              }}
+            >
+              <Heart size={30} fill="#6B0818" color="#FFF" />
+            </div>
+            <span
+              style={{
+                fontFamily: 'var(--font-hindi-display)',
+                fontSize: '1.2rem',
+                color: 'var(--gold-light)',
+                fontWeight: 600
+              }}
+            >
+              संग
+            </span>
+          </div>
+
+          {/* Bride Jharokha (Garima Verma) */}
+          <div
+            style={{
+              flex: '1 1 260px',
+              maxWidth: '320px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <div
+              style={{
+                position: 'relative',
+                width: 'clamp(220px, 44vw, 270px)',
+                height: 'clamp(290px, 58vw, 360px)',
+                borderRadius: '135px 135px 24px 24px',
+                border: '3px solid var(--gold-primary)',
+                boxShadow: '0 18px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(212, 175, 55, 0.45)',
+                overflow: 'hidden',
+                background: 'linear-gradient(180deg, #4A030D 0%, #150003 100%)',
+                padding: '5px'
+              }}
+            >
+              <img
+                src={couple.bride.photo}
+                alt={couple.bride.fullName}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center 10%',
+                  borderRadius: '128px 128px 20px 20px',
+                  display: 'block'
+                }}
+              />
+            </div>
+
+            <div style={{ marginTop: '16px', textAlign: 'center' }}>
+              <div
+                className="royal-badge"
+                style={{
+                  marginBottom: '8px',
+                  background: 'rgba(212, 175, 55, 0.18)',
+                  border: '1px solid var(--gold-primary)',
+                  color: 'var(--gold-light)'
+                }}
+              >
+                {couple.bride.badge}
+              </div>
+              <h3
+                className="gold-glow-text"
+                style={{
+                  fontFamily: 'var(--font-hindi-display)',
+                  fontSize: 'clamp(1.4rem, 3.5vw, 1.8rem)',
+                  margin: '0 0 4px 0',
+                  fontWeight: 700
+                }}
+              >
+                {couple.bride.fullName}
+              </h3>
+              <div
+                style={{
+                  fontFamily: 'var(--font-modern)',
+                  fontSize: '0.88rem',
+                  color: 'var(--text-muted)'
+                }}
+              >
+                ({couple.bride.designation})
               </div>
             </div>
           </div>
@@ -347,7 +343,7 @@ export default function HeroSection({ onOpenOriginalCard }) {
               marginBottom: '16px'
             }}
           >
-            शुभ मुहूर्त की पावन उल्टी गिनती :
+            शुभ-विवाह की मंगल बेला में शेष समय :
           </div>
 
           <div
@@ -414,16 +410,16 @@ export default function HeroSection({ onOpenOriginalCard }) {
         >
           <button onClick={onOpenOriginalCard} className="btn-royal-gold">
             <BookOpen size={18} />
-            <span>मूल निमंत्रण पत्रिका देखें (View Printed Card)</span>
+            <span>मूल मुद्रित कार्ड देखें (View Printed Card)</span>
           </button>
 
           <a href="#events" className="btn-royal-outline">
             <Calendar size={18} />
-            <span>मांगलिक कार्यक्रम (Schedule)</span>
+            <span>कार्यक्रम समय-सारिणी (Schedule)</span>
           </a>
 
           <a href={createGoogleCalendarUrl()} target="_blank" rel="noopener noreferrer" className="btn-royal-outline">
-            <span>📅 कैलेंडर में सेव करें</span>
+            <span>📅 कैलेंडर में जोड़ें</span>
           </a>
         </div>
       </div>

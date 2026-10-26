@@ -96,18 +96,34 @@ export default function RoyalHeader({ petalsEnabled, onTogglePetals }) {
           <p
             style={{
               fontFamily: 'var(--font-hindi-body)',
-              fontSize: 'clamp(0.92rem, 2.3vw, 1.15rem)',
+              fontSize: 'clamp(0.95rem, 2.4vw, 1.2rem)',
               color: 'var(--gold-light)',
               maxWidth: '680px',
-              margin: '0 auto 14px auto',
+              margin: '0 auto 12px auto',
               lineHeight: 1.7,
-              textShadow: '0 1px 4px rgba(0,0,0,0.8)'
+              textShadow: '0 1px 4px rgba(0,0,0,0.8)',
+              whiteSpace: 'pre-line'
             }}
           >
             {invitationHeader.ganeshDoha}
           </p>
 
-          {/* Kashi Vishwanath Invocation */}
+          {/* Doha Meaning */}
+          <p
+            style={{
+              fontFamily: 'var(--font-hindi-body)',
+              fontSize: 'clamp(0.85rem, 2vw, 0.98rem)',
+              color: 'var(--text-muted)',
+              fontStyle: 'italic',
+              maxWidth: '640px',
+              margin: '0 auto 14px auto',
+              lineHeight: 1.6
+            }}
+          >
+            {invitationHeader.ganeshDohaMeaning}
+          </p>
+
+          {/* Welcome Text Pill */}
           <div
             style={{
               background: 'rgba(212, 175, 55, 0.08)',
@@ -117,7 +133,7 @@ export default function RoyalHeader({ petalsEnabled, onTogglePetals }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              margin: '0 auto 12px auto'
+              margin: '0 auto'
             }}
           >
             <Sparkles size={14} color="#D4AF37" />
@@ -129,27 +145,13 @@ export default function RoyalHeader({ petalsEnabled, onTogglePetals }) {
                 fontWeight: 500
               }}
             >
-              {invitationHeader.kashiBlessing}
+              {invitationHeader.welcomeText}
             </span>
             <Sparkles size={14} color="#D4AF37" />
           </div>
-
-          {/* Vishnu Mangalam Mantra */}
-          <p
-            style={{
-              fontFamily: 'var(--font-hindi-body)',
-              fontSize: 'clamp(0.88rem, 2.2vw, 1.05rem)',
-              color: 'var(--text-muted)',
-              fontStyle: 'italic',
-              maxWidth: '640px',
-              margin: '0 auto'
-            }}
-          >
-            {invitationHeader.vishnuMantra}
-          </p>
         </div>
 
-        {/* Floating Petal Controls Pill */}
+        {/* Petal Control */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
           <button
             onClick={onTogglePetals}

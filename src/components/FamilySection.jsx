@@ -1,4 +1,4 @@
-import { Users, Phone, MessageSquare, Sparkles, Heart } from 'lucide-react';
+import { Users, Heart, Phone, MessageSquare, Sparkles } from 'lucide-react';
 import { WEDDING_DATA } from '../config/weddingData';
 
 export default function FamilySection() {
@@ -18,7 +18,7 @@ export default function FamilySection() {
         <div style={{ textAlign: 'center', marginBottom: '36px' }}>
           <div className="royal-badge" style={{ marginBottom: '12px' }}>
             <Sparkles size={14} color="var(--gold-light)" />
-            <span>सस्नेह निमंत्रक एवं स्वजन</span>
+            <span>पारिवारिक स्नेह एवं शुभाशीर्वाद</span>
             <Sparkles size={14} color="var(--gold-light)" />
           </div>
 
@@ -34,7 +34,7 @@ export default function FamilySection() {
           </h2>
 
           <div className="sacred-divider">
-            <span style={{ color: 'var(--gold-primary)', fontSize: '1.2rem' }}>🌺</span>
+            <span style={{ color: 'var(--gold-primary)', fontSize: '1.2rem' }}>💐</span>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export default function FamilySection() {
                 }}
               >
                 <Users size={16} />
-                <span>दर्शनाभिलाषी</span>
+                <span>{family.darshanabhilashiTitle}</span>
               </div>
               <h3
                 className="gold-glow-text"
@@ -79,7 +79,7 @@ export default function FamilySection() {
                   margin: 0
                 }}
               >
-                समस्त वर्मा परिवार
+                {family.darshanabhilashiFamily}
               </h3>
             </div>
 
@@ -145,7 +145,7 @@ export default function FamilySection() {
                 }}
               >
                 <Heart size={16} color="var(--gold-primary)" />
-                <span>विनीत एवं प्रेषक</span>
+                <span>॥ विनीत ॥</span>
               </div>
 
               <h3
@@ -232,7 +232,7 @@ export default function FamilySection() {
                       </a>
 
                       <a
-                        href={`https://wa.me/91${contact.number}?text=${encodeURIComponent('नमस्ते! गरिमा संग राहुल के शुभ विवाह निमंत्रण के संबंध में संपर्क कर रहे हैं।')}`}
+                        href={`https://wa.me/91${contact.number}?text=${encodeURIComponent('नमस्ते! राहुल संग गरिमा के शुभ विवाह निमंत्रण के संबंध में संपर्क कर रहे हैं।')}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{

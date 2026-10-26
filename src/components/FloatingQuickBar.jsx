@@ -16,8 +16,8 @@ export default function FloatingQuickBar({ onOpenOriginalCard }) {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'गरिमा संग राहुल - शुभ विवाह निमंत्रण',
-        text: '11 नवम्बर 2026, बुधवार को ओम् मंगलम् लॉन, रमना, वाराणसी में आयोजित गरिमा एवं राहुल के शुभ विवाह में आप सपरिवार सादर आमंत्रित हैं।',
+        title: 'राहुल संग गरिमा - शुभ विवाह निमंत्रण',
+        text: '11 नवम्बर 2026, बुधवार को ओम् मंगलम् लॉन, रमना, वाराणसी में आयोजित राहुल एवं गरिमा के शुभ विवाह में आप सपरिवार सादर आमंत्रित हैं।',
         url: window.location.href
       }).catch(() => {});
     } else {
@@ -92,14 +92,14 @@ export default function FloatingQuickBar({ onOpenOriginalCard }) {
         style={{
           background: 'none',
           border: 'none',
-          color: 'var(--cream-ivory)',
+          color: 'var(--gold-light)',
           display: 'flex',
           alignItems: 'center',
           gap: '5px',
           fontSize: '0.8rem',
           cursor: 'pointer',
           padding: '6px 8px',
-          fontWeight: 500
+          fontWeight: 600
         }}
       >
         <BookOpen size={14} color="var(--gold-primary)" />
@@ -107,7 +107,7 @@ export default function FloatingQuickBar({ onOpenOriginalCard }) {
       </button>
 
       <a
-        href={`tel:${WEDDING_DATA.family.contacts[0].number}`}
+        href="#family"
         style={{
           color: 'var(--cream-ivory)',
           display: 'flex',
@@ -120,26 +120,26 @@ export default function FloatingQuickBar({ onOpenOriginalCard }) {
         }}
       >
         <Phone size={14} color="var(--gold-primary)" />
-        <span>कॉल</span>
+        <span>संपर्क</span>
       </a>
 
       <button
         onClick={handleShare}
         style={{
-          background: 'none',
+          background: '#25D366',
           border: 'none',
-          color: 'var(--gold-light)',
+          borderRadius: '50%',
+          width: '32px',
+          height: '32px',
           display: 'flex',
           alignItems: 'center',
-          gap: '5px',
-          fontSize: '0.8rem',
-          cursor: 'pointer',
-          padding: '6px 8px',
-          fontWeight: 600
+          justifyContent: 'center',
+          color: '#FFF',
+          cursor: 'pointer'
         }}
+        title="शेयर करें"
       >
-        <Share2 size={14} color="var(--gold-primary)" />
-        <span>शेयर</span>
+        <Share2 size={15} />
       </button>
     </nav>
   );
